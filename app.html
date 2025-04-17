@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>BYU Football Trivia</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f1f5f9;
+      text-align: center;
+      padding: 2rem;
+      color: #002E5D;
+    }
+    .card {
+      background: white;
+      padding: 2rem;
+      max-width: 600px;
+      margin: auto;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    h1 {
+      margin-bottom: 1rem;
+    }
+    .options button {
+      display: block;
+      margin: 0.5rem auto;
+      padding: 0.6rem 1rem;
+      background: #002E5D;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .options button:hover {
+      background: #013d7a;
+    }
+    .feedback {
+      font-weight: bold;
+      margin-top: 1rem;
+    }
+    .next-btn {
+      margin-top: 1rem;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    <h1>🏈 BYU Football Trivia</h1>
+    <p id="question">Loading question...</p>
+    <div class="options" id="options"></div>
+    <p class="feedback" id="feedback"></p>
+    <button class="next-btn" id="nextBtn">Next Question</button>
+    <br /><br />
+    <a href="scratch.html">⬅️ Back to Scratch Page</a>
+  </div>
+
+  <script>
+    const quiz = [
+      {
+        question: "What year did BYU win the national championship?",
+        answers: ["1984", "1990", "1979", "2001"],
+        correct: 0
+      },
+      {
+        question: "Who is BYU’s all-time leading rusher?",
+        answers: ["Luke Staley", "Jamaal Williams", "Tyler Allgeier", "Harvey Unga"],
+        correct: 1
+      },
+      {
+        question: "What conference did BYU join in 2023?",
+        answers: ["Mountain West", "WAC", "Big 12", "Pac-12"],
+        correct: 2
+      }
+    ];
+
+    let current = 0;
+
+    const questionEl = document.getElementById('question');
+    const optionsEl = document.getElementById('options');
+    const feedbackEl = document.getElementById('feedback');
+    const nextBtn = document.getElementById('nextBtn');
+
+    function loadQuestion() {
+      const q = quiz[current];
+      questionEl.textContent = q.question;
+      optionsEl.innerHTML = '';
+      feedbackEl.textContent = '';
+      nextBtn.style.display = 'none';
+
+      q.answers.forEach((answer, idx) => {
+        const btn = document.createElement('button');
+        btn.textContent = answer;
+        btn.onclick = () => checkAnswer(idx);
+        optionsEl.appendChild(btn);
+      });
+    }
+
+    function checkAnswer(selected) {
+      const q = quiz[current];
+      if (selected === q.correct) {
+        feedbackEl.textContent = "✅ Correct!";
+        feedbackEl.style.color = "green";
+      } else {
+        feedbackEl.textContent = `❌ Nope! Correct answer: ${q.answers[q.correct]}`;
+        feedbackEl.style.color = "red";
+      }
+      nextBtn.style.display = 'inline-block';
+    }
+
+    nextBtn.onclick = () => {
+      current++;
+      if (current < quiz.length) {
+        loadQuestion();
+      } else {
+        questionEl.textContent = "🏁 Quiz complete!";
+        optionsEl.innerHTML = "";
+        feedbackEl.textContent = "";
+        nextBtn.style.display = "none";
+      }
+    };
+
+    loadQuestion();
+  </script>
+
+</body>
+</html>
